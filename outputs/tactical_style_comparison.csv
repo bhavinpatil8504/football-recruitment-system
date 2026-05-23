@@ -1,0 +1,6 @@
+style,status,total_v_adj,mean_fit,total_v_style,total_cost
+gegenpressing,Optimal,0.0378,0.6001,0.0422,59.6
+positional_play,Optimal,0.0385,0.5887,0.0424,60.0
+low_block_counter,Optimal,0.0378,0.6801,0.0458,60.0
+pragmatic,Optimal,0.0383,0.7442,0.049,59.9
+balanced,Optimal,0.0385,0.7453,0.0493,60.0

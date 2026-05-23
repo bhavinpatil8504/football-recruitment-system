@@ -1,0 +1,39 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# Pinned requirements for football_recruitment
+# Tested with Python 3.10 and 3.11
+# DO NOT pip install -r this directly — use setup.py or setup.bat instead
+# ─────────────────────────────────────────────────────────────────────────────
+
+# Foundation — everything else depends on these exact versions
+numpy==1.26.4
+pandas==2.1.4
+scipy==1.11.4
+
+# Parquet support (required for .to_parquet / .read_parquet)
+pyarrow>=14.0.0
+
+# Data source
+statsbombpy>=1.18.0
+socceraction==1.4.2
+
+# Machine learning
+scikit-learn==1.3.2
+xgboost==2.0.3
+
+# NOTE: PyMC removed — replaced with pure numpy Empirical Bayes (bayesian.py)
+# This eliminates the C-compiler dependency that broke on Windows.
+
+# Optimization
+pulp==2.7.0
+
+# Visualization
+matplotlib==3.8.2
+seaborn==0.13.2
+plotly==5.18.0
+
+# Explainability
+shap
+
+# Utilities
+tqdm==4.66.1
+joblib==1.3.2

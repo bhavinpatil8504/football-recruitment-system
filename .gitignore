@@ -1,0 +1,15 @@
+venv/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+.env
+
+output_history.txt
+terminal_history.txt
+
+.DS_Store
+
+outputs/raw_events.parquet
+outputs/*.parquet

@@ -1,0 +1,166 @@
+================================================================================
+  FOOTBALL RECRUITMENT ML PIPELINE - COMPLETE RUN INSTRUCTIONS
+  Give this entire "football_recruitment" folder to your friend.
+================================================================================
+
+MINIMUM REQUIREMENTS:
+  - 16 GB RAM (8 GB will crash on multi-league data)
+  - Windows 10/11 OR Mac/Linux
+  - Python 3.10 or 3.11 (NOT 3.12+)
+  - Internet connection (downloads StatsBomb data live)
+  - ~5 GB free disk space
+
+CHECK PYTHON VERSION FIRST:
+  python --version
+  (Must show 3.10.x or 3.11.x)
+
+================================================================================
+  STEP 1: SETUP (run once, takes ~10 minutes)
+================================================================================
+
+WINDOWS:
+  1. Open Command Prompt (cmd)
+  2. cd to this folder:
+       cd C:\path\to\football_recruitment
+  3. Run:
+       setup.bat
+
+MAC/LINUX:
+  1. Open Terminal
+  2. cd to this folder
+  3. Run:
+       chmod +x setup.sh && ./setup.sh
+
+IF SETUP.BAT/SH FAILS:
+  Create venv manually and use setup.py:
+    python -m venv venv
+    venv\Scripts\activate          (Windows)
+    source venv/bin/activate       (Mac/Linux)
+    python setup.py
+
+================================================================================
+  STEP 2: ACTIVATE ENVIRONMENT (every time you open a new terminal)
+================================================================================
+
+WINDOWS:
+  cd C:\path\to\football_recruitment
+  venv\Scripts\activate
+
+MAC/LINUX:
+  cd /path/to/football_recruitment
+  source venv/bin/activate
+
+You should see (venv) at the start of your prompt.
+
+================================================================================
+  STEP 3: RUN THE PIPELINE
+================================================================================
+
+OPTION A - QUICK TEST (5-10 min, low RAM, checks everything works):
+  python pipeline.py --quick --skip-gnn --n-seasons 3
+
+OPTION B - STANDARD RUN (30-60 min, ~6 GB RAM):
+  python pipeline.py --n-seasons 10 --skip-gnn
+
+OPTION C - FULL RUN WITH GNN (1-2 hours, ~8 GB RAM):
+  python pipeline.py --n-seasons 10
+
+OPTION D - FULL MULTI-LEAGUE + GNN (2-4 hours, NEEDS 12-16 GB RAM):
+  python pipeline.py --n-seasons 10 --multi-league --n-cl-seasons 5
+
+OPTION E - EVERYTHING + NEW FEATURES (recommended for final results):
+  python pipeline.py --n-seasons 10 --multi-league --n-cl-seasons 5 --min-young-pct 0.3 --budget 80 --style gegenpressing
+
+
+*** WE NEED OPTION D or E FOR THE FINAL RESULTS. ***
+*** If RAM is tight, try Option B first to verify setup works. ***
+
+================================================================================
+  ALL COMMAND-LINE FLAGS
+================================================================================
+
+  --quick              Use only 10 matches per season (fast test)
+  --skip-gnn           Skip GNN stage (faster, uses raw features only)
+  --n-seasons N        Number of La Liga seasons to load (default: 10)
+  --multi-league       Include Premier League, Bundesliga, Serie A, Ligue 1, CL
+  --n-cl-seasons N     Champions League seasons to load (default: 5, max: 14)
+  --lam FLOAT          Risk aversion 0-1 (default: 0.5)
+  --budget FLOAT       Transfer budget in euro millions (default: 80)
+  --formation STR      4-3-3, 4-4-2, or 3-5-2 (default: 4-3-3)
+  --style STR          gegenpressing, positional_play, low_block_counter,
+                       pragmatic, balanced (default: gegenpressing)
+  --alpha FLOAT        Tactical fit weight 0-1 (default: 0.4)
+  --elite-pct FLOAT    Remove top (100-N)% players (default: 85 = remove top 15%)
+  --max-per-club N     Max players from one club (default: 3)
+  --min-young-pct F    Min fraction of young prospects 0-1 (default: 0.0)
+  --no-elite-filter    Disable elite player/club filtering
+  --epochs N           GNN training epochs (default: 30)
+  --gnn-arch STR       gat or sage (default: gat)
+
+================================================================================
+  OUTPUT FILES (all saved to outputs/ folder)
+================================================================================
+
+  raw_events.parquet                  - Raw StatsBomb event data
+  raw_lineups.parquet                 - Player lineup data
+  player_map.parquet                  - Player-team-season mapping
+  player_features.parquet             - Engineered features (Stage 2)
+  player_embeddings.parquet           - GNN embeddings (Stage 3)
+  player_features_normalized.parquet  - Bayesian normalized (Stage 4)
+  player_predictions.parquet          - Predicted impact scores (Stage 5)
+  ablation_results.csv                - Feature set ablation study
+  shap_summary_beeswarm.png           - SHAP feature importance (beeswarm)
+  shap_importance_bar.png             - SHAP feature importance (bar)
+  shap_values.csv                     - Raw SHAP values per player
+  strategy_comparison.csv             - ILP vs greedy vs random
+  strategy_comparison.png             - Strategy comparison plot
+  optimized_squad.parquet             - Final ILP squad
+  tactical_squad.parquet              - Style-adjusted squad
+  tactical_style_comparison.csv       - Cross-style analysis
+  sensitivity_lambda.csv              - Risk sensitivity analysis
+  sensitivity_alpha.csv               - Tactical weight sensitivity
+  league_effects_*.png                - Bayesian league difficulty plots
+  eval_report.png                     - Evaluation summary plot
+
+*** COPY THE ENTIRE outputs/ FOLDER BACK TO SHIKHAR AFTER THE RUN ***
+
+================================================================================
+  TROUBLESHOOTING
+================================================================================
+
+"Unable to allocate" / MemoryError:
+  -> Not enough RAM. Use --quick or --skip-gnn or reduce --n-seasons.
+  -> Close other applications (Chrome is a RAM hog).
+  -> On Windows, try increasing virtual memory (pagefile).
+
+"No module named 'torch'" or similar:
+  -> Make sure venv is activated (you see (venv) in prompt).
+  -> Re-run setup.bat or setup.py.
+
+"No events loaded" / network errors:
+  -> StatsBomb data is downloaded live. Check internet connection.
+  -> Some seasons may fail temporarily. Re-run and it usually works.
+
+"XGBoost not found — using sklearn GBT":
+  -> Not critical. XGBoost is better but sklearn's GBT works fine.
+
+Pipeline hangs at "Loading match events":
+  -> This is normal. Each season has 300-400 matches.
+  -> La Liga alone = ~6000 matches across 15 seasons.
+  -> Multi-league adds another ~3000 matches.
+  -> Be patient, or use --quick for testing.
+
+================================================================================
+  WHAT THIS PROJECT DOES (1-paragraph summary for your friend)
+================================================================================
+
+This is Shikhar's B.Tech Project (BTP). It builds a 7-stage ML pipeline that
+simulates Moneyball-style football squad building for a financially constrained
+club. It loads real match data from StatsBomb, extracts player features (xG,
+progressive passes, pressures), builds passing network graphs, trains a GNN to
+learn player representations, normalizes stats across leagues using Bayesian
+methods, predicts future performance with XGBoost, and then uses Integer Linear
+Programming to find the optimal 11-player squad within a transfer budget. The
+final stage adds tactical style matching (gegenpressing, positional play, etc.).
+
+================================================================================

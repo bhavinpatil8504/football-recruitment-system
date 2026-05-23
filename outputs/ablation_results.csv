@@ -1,0 +1,11 @@
+model,RMSE,MAE,R2,Spearman,feature_set,n_features
+ElasticNet | 1. Baseline (totals only),0.0065,0.0056,0.1239,0.3645,1. Baseline (totals only),6
+XGBoost | 1. Baseline (totals only),0.0376,0.0127,-28.8205,0.2896,1. Baseline (totals only),6
+ElasticNet | 2. +Phase breakdown,0.0061,0.0053,0.22,0.4488,2. +Phase breakdown,46
+XGBoost | 2. +Phase breakdown,0.0421,0.0133,-36.3126,0.4978,2. +Phase breakdown,46
+ElasticNet | 3. +Phase + OneHot Position (control),0.0061,0.0053,0.22,0.4488,3. +Phase + OneHot Position (control),46
+XGBoost | 3. +Phase + OneHot Position (control),0.0421,0.0133,-36.3126,0.4978,3. +Phase + OneHot Position (control),46
+ElasticNet | 4. +Phase + GNN embeddings,0.0061,0.0053,0.22,0.4488,4. +Phase + GNN embeddings,46
+XGBoost | 4. +Phase + GNN embeddings,0.0421,0.0133,-36.3126,0.4978,4. +Phase + GNN embeddings,46
+ElasticNet | 5. Full (GNN + Bayes + VAEP/xT),0.0061,0.0053,0.22,0.4488,5. Full (GNN + Bayes + VAEP/xT),46
+XGBoost | 5. Full (GNN + Bayes + VAEP/xT),0.0421,0.0133,-36.3126,0.4978,5. Full (GNN + Bayes + VAEP/xT),46

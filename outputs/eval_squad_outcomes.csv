@@ -1,0 +1,5 @@
+strategy,n_squad,n_matched_actuals,predicted_impact,realised_impact,prediction_error,impact_per_cost,rank_correlation,avg_squad_risk,total_cost,vs_random_pct
+ILP (ours),11,11,0.038,0.121,0.682,0.002,-0.164,0.0246,60.0,10.0
+Random,11,11,-0.303,0.11,3.748,0.0018,0.064,0.0816,59.8,0.0
+Value-per-cost,11,11,0.073,0.105,0.306,0.003,-0.232,0.0147,34.6,-4.5
+Greedy,6,6,0.049,0.092,0.47,0.0015,0.771,0.0187,60.0,-16.4

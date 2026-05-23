@@ -1,0 +1,5 @@
+Strategy,Total Impact (v_adj),Impact / Cost,Avg Risk,Total Cost,N Players,vs. Random (%)
+ILP (ours),0.038,0.0006,0.0246,60.0,11,112.5
+Greedy,0.049,0.0008,0.0187,60.0,6,116.2
+Value-per-cost,0.073,0.0021,0.0147,34.6,11,124.1
+Random,-0.303,-0.0051,0.0816,59.8,11,0.0
